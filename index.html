@@ -1,0 +1,34 @@
+<body></body>
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library@1.0.1/build/nn.min.js"></script>
+<script>
+  let base = 'https://storage.googleapis.com/cdn.patatap.com/A/3'
+
+  // this is how i change my <body> element
+  nn.get('body')
+    .css('background', 'pink')
+    .css('margin', 100)
+
+  let clay = nn.create('audio')
+    .addTo('body')
+    // .set('controls', true)
+    .set('src', base + 'clay.mp3')
+  
+  let moon = nn.create('audio')
+    .addTo('body')
+    .set('preload', 'auto')
+    // .set('controls', true)
+    .set('src', base + 'moon.mp3')
+
+  function play (e) {
+    if (e.key === 'q') {
+      clay.currentTime = 0
+      clay.play()
+    }
+    if (e.key === 'w') {
+      moon.currentTime = 0
+      moon.play()
+    }
+  }
+
+  nn.on('keydown', play)
+</script>
