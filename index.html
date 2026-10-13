@@ -1,34 +1,50 @@
 <body></body>
-<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library@1.0.1/build/nn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
 <script>
-  let base = 'https://storage.googleapis.com/cdn.patatap.com/A/3'
 
-  // this is how i change my <body> element
   nn.get('body')
     .css('background', 'pink')
-    .css('margin', 100)
+    .css('margin', 0)
 
-  let clay = nn.create('audio')
-    .addTo('body')
-    // .set('controls', true)
-    .set('src', base + 'clay.mp3')
-  
-  let moon = nn.create('audio')
-    .addTo('body')
-    .set('preload', 'auto')
-    // .set('controls', true)
-    .set('src', base + 'moon.mp3')
+  const sounds = [
+    nn.create('audio').set('src', 'SOUND1.mp3').set('preload', 'auto').addTo('body'),
+    nn.create('audio').set('src', 'SOUND2.mp3').set('preload', 'auto').addTo('body'),
+    nn.create('audio').set('src', 'SOUND3.mp3').set('preload', 'auto').addTo('body'),
+    nn.create('audio').set('src', 'SOUND4.mp3').set('preload', 'auto').addTo('body'),
+    nn.create('audio').set('src', 'SOUND5.mp3').set('preload', 'auto').addTo('body')
+  ]
 
-  function play (e) {
-    if (e.key === 'q') {
-      clay.currentTime = 0
-      clay.play()
+  const svg = nn.create('svg').addTo('body')
+
+  function drop () {
+    const clr = nn.randomColor()
+    const x = nn.random(nn.width)
+    const y = nn.random(nn.height)
+    const r = nn.random(10, 100)
+    const circ = svg.circle(x, y, r).fill(clr)
+
+    const timing = {
+      duration: 600,
+      easing: 'ease-out'
     }
-    if (e.key === 'w') {
-      moon.currentTime = 0
-      moon.play()
-    }
+    const keyframes = [
+      { r: 0, opacity: 0 },
+      { r: r, opacity: 1 },
+      { r: r, opacity: 0 }
+    ]
+    const anim = circ.animate(keyframes, timing)
+    anim.onfinish = () => circ.remove()
+  }
+
+  function play () {
+    const i = Math.floor(nn.random(sounds.length))
+    const sound = sounds[i]
+
+    sound.currentTime = 0
+    sound.play()
+    drop()
   }
 
   nn.on('keydown', play)
+
 </script>
